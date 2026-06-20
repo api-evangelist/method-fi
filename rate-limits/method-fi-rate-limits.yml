@@ -1,0 +1,59 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Method Financial
+providerId: method-fi
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- FinTech
+- Payments
+- Liabilities
+- Debt
+- Embedded Finance
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  The Method API enforces per-account rate limits to protect platform
+  stability. Requests that exceed the allowed rate receive an HTTP 429
+  response and should be retried with exponential backoff. Method also
+  supports idempotency keys and request IDs for safe retries. Specific
+  per-endpoint request-per-minute thresholds are not publicly published and
+  are not reconciled in this artifact.
+notes: >-
+  Confirm specific per-endpoint and per-account limits with Method during
+  onboarding; data-refresh endpoints (balances, payoffs, attributes) may carry
+  separate freshness and concurrency constraints from core CRUD endpoints.
+sources:
+- https://docs.methodfi.com
+- https://docs.methodfi.com/reference/introduction
+responseCodes:
+  throttled: 429
+limits:
+- name: Requests Per Minute
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Per-account request rate; exceeding returns HTTP 429.
+- name: Data Refresh Concurrency
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Balances, payoffs, transactions, and attribute refreshes may have separate concurrency limits.
+- name: Connect Requests
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Liability discovery requests may be throttled separately from CRUD endpoints.
+policies:
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+- name: Idempotency
+  description: Send an Idempotency-Key header on writes so retries do not duplicate entities, accounts, or payments.
+- name: Request IDs
+  description: Each response carries a request ID for support and debugging of throttled or failed calls.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
