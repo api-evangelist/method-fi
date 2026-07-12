@@ -1,0 +1,14 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/method-fi-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Provide your Method API key as a Bearer token in the Authorization header. Optionally
+    send a Method-Version header (e.g. 2026-03-30).
+  sources:
+  - openapi/method-fi-openapi.yml

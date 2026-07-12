@@ -180,6 +180,12 @@ apis:
     account, payment, verification, and attribute updates - to your endpoints over
     HTTPS as resources change.
 common:
+- type: TrustCenter
+  url: security/method-fi-trust-center.yml
+- type: DomainSecurity
+  url: security/method-fi-domain-security.yml
+- type: Authentication
+  url: authentication/method-fi-authentication.yml
 - type: GitHubOrganization
   url: https://github.com/MethodFi
 - type: LinkedIn
