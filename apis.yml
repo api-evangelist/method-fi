@@ -180,6 +180,8 @@ apis:
     account, payment, verification, and attribute updates - to your endpoints over
     HTTPS as resources change.
 common:
+- type: AgenticAccess
+  url: agentic-access/method-fi-agentic-access.yml
 - type: TrustCenter
   url: security/method-fi-trust-center.yml
 - type: DomainSecurity
