@@ -1,0 +1,309 @@
+openapi: 3.0.1
+info:
+  title: Method Financial Accounts Entities API
+  description: The Method API enables developers to connect, retrieve, and pay down a consumer's liabilities (credit cards, student loans, auto loans, mortgages, and personal loans) across a network of financial institutions. Core resources are Entities, Accounts, Payments, Merchants, Connect, Transactions, and Webhooks. All requests are authenticated with a Bearer API key.
+  termsOfService: https://methodfi.com/legal/platform-agreement
+  contact:
+    name: Method Support
+    url: https://docs.methodfi.com
+    email: support@methodfi.com
+  version: '2026-03-30'
+servers:
+- url: https://production.methodfi.com
+  description: Production
+- url: https://sandbox.methodfi.com
+  description: Sandbox
+- url: https://dev.methodfi.com
+  description: Development (simulations enabled)
+security:
+- bearerAuth: []
+tags:
+- name: Entities
+  description: Individuals and corporations that own accounts.
+paths:
+  /entities:
+    post:
+      operationId: createEntity
+      tags:
+      - Entities
+      summary: Create an entity
+      description: Creates an individual or corporation entity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityCreateRequest'
+      responses:
+        '200':
+          description: Entity created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityResponse'
+    get:
+      operationId: listEntities
+      tags:
+      - Entities
+      summary: List entities
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: A list of entities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityListResponse'
+  /entities/{ent_id}:
+    parameters:
+    - $ref: '#/components/parameters/EntityId'
+    get:
+      operationId: getEntity
+      tags:
+      - Entities
+      summary: Retrieve an entity
+      responses:
+        '200':
+          description: The entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityResponse'
+    put:
+      operationId: updateEntity
+      tags:
+      - Entities
+      summary: Update an entity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityCreateRequest'
+      responses:
+        '200':
+          description: The updated entity
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityResponse'
+  /entities/{ent_id}/credit_scores:
+    parameters:
+    - $ref: '#/components/parameters/EntityId'
+    get:
+      operationId: retrieveEntityCreditScores
+      tags:
+      - Entities
+      summary: Retrieve credit scores
+      responses:
+        '200':
+          description: Credit score data
+          content:
+            application/json:
+              schema:
+                type: object
+  /entities/{ent_id}/verification_sessions:
+    parameters:
+    - $ref: '#/components/parameters/EntityId'
+    post:
+      operationId: createEntityVerificationSession
+      tags:
+      - Entities
+      summary: Create a verification session
+      description: Create an SMS, KBA, SNA, or BYO verification session for the entity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityVerificationSessionRequest'
+      responses:
+        '200':
+          description: Verification session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityVerificationSessionResponse'
+    get:
+      operationId: listEntityVerificationSessions
+      tags:
+      - Entities
+      summary: List verification sessions
+      responses:
+        '200':
+          description: Verification sessions
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    Individual:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        dob:
+          type: string
+          format: date
+    EntityVerificationSessionRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - phone
+          - identity
+        method:
+          type: string
+          enum:
+          - sms
+          - kba
+          - sna
+          - byo_sms
+          - byo_kyc
+          - element
+        sms:
+          type: object
+        kba:
+          type: object
+    EntityVerificationSessionResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        entity_id:
+          type: string
+        type:
+          type: string
+        method:
+          type: string
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+    EntityListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityResponse'
+    Address:
+      type: object
+      properties:
+        line1:
+          type: string
+        line2:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+    Corporation:
+      type: object
+      properties:
+        name:
+          type: string
+        dba:
+          type: string
+        ein:
+          type: string
+        owners:
+          type: array
+          items:
+            type: object
+    EntityResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        individual:
+          $ref: '#/components/schemas/Individual'
+        corporation:
+          $ref: '#/components/schemas/Corporation'
+        status:
+          type: string
+          enum:
+          - active
+          - incomplete
+          - disabled
+        verification:
+          type: object
+        products:
+          type: array
+          items:
+            type: string
+        restricted_products:
+          type: array
+          items:
+            type: string
+        error:
+          nullable: true
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    EntityCreateRequest:
+      type: object
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - individual
+          - c_corporation
+          - receive_only
+        individual:
+          $ref: '#/components/schemas/Individual'
+        corporation:
+          $ref: '#/components/schemas/Corporation'
+        address:
+          $ref: '#/components/schemas/Address'
+        metadata:
+          type: object
+  parameters:
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+    EntityId:
+      name: ent_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The entity identifier (e.g. ent_xxx).
+    PageLimit:
+      name: page_limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 100
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Method API key as a Bearer token in the Authorization header. Optionally send a Method-Version header (e.g. 2026-03-30).

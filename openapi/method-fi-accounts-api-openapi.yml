@@ -1,0 +1,250 @@
+openapi: 3.0.1
+info:
+  title: Method Financial Accounts API
+  description: The Method API enables developers to connect, retrieve, and pay down a consumer's liabilities (credit cards, student loans, auto loans, mortgages, and personal loans) across a network of financial institutions. Core resources are Entities, Accounts, Payments, Merchants, Connect, Transactions, and Webhooks. All requests are authenticated with a Bearer API key.
+  termsOfService: https://methodfi.com/legal/platform-agreement
+  contact:
+    name: Method Support
+    url: https://docs.methodfi.com
+    email: support@methodfi.com
+  version: '2026-03-30'
+servers:
+- url: https://production.methodfi.com
+  description: Production
+- url: https://sandbox.methodfi.com
+  description: Sandbox
+- url: https://dev.methodfi.com
+  description: Development (simulations enabled)
+security:
+- bearerAuth: []
+tags:
+- name: Accounts
+  description: Liability and asset accounts linked to an entity.
+paths:
+  /accounts:
+    post:
+      operationId: createAccount
+      tags:
+      - Accounts
+      summary: Create an account
+      description: Links a liability or asset account to an entity.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreateRequest'
+      responses:
+        '200':
+          description: Account created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+    get:
+      operationId: listAccounts
+      tags:
+      - Accounts
+      summary: List accounts
+      parameters:
+      - name: holder_id
+        in: query
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: A list of accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountListResponse'
+  /accounts/{acc_id}:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: getAccount
+      tags:
+      - Accounts
+      summary: Retrieve an account
+      responses:
+        '200':
+          description: The account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+  /accounts/{acc_id}/balances:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: getAccountBalance
+      tags:
+      - Accounts
+      summary: Retrieve the latest balance
+      description: Retrieves the real-time balance from the account's financial institution.
+      responses:
+        '200':
+          description: Balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+  /accounts/{acc_id}/payoff:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    get:
+      operationId: getAccountPayoff
+      tags:
+      - Accounts
+      summary: Retrieve a payoff
+      responses:
+        '200':
+          description: Payoff
+          content:
+            application/json:
+              schema:
+                type: object
+  /accounts/{acc_id}/verification_sessions:
+    parameters:
+    - $ref: '#/components/parameters/AccountId'
+    post:
+      operationId: createAccountVerificationSession
+      tags:
+      - Accounts
+      summary: Create an account verification session
+      description: Verify an account via micro-deposits, instant network, or a supported aggregator (Plaid, MX, Teller).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Verification session
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    AccountListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountResponse'
+    AccountResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        holder_id:
+          type: string
+        status:
+          type: string
+          enum:
+          - active
+          - disabled
+          - closed
+          - processing
+        type:
+          type: string
+          enum:
+          - ach
+          - liability
+        ach:
+          type: object
+        liability:
+          type: object
+        products:
+          type: array
+          items:
+            type: string
+        error:
+          nullable: true
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    AccountCreateRequest:
+      type: object
+      required:
+      - holder_id
+      properties:
+        holder_id:
+          type: string
+          description: The entity that owns this account.
+        ach:
+          type: object
+          description: ACH account details (routing/number/type).
+          properties:
+            routing:
+              type: string
+            number:
+              type: string
+            type:
+              type: string
+              enum:
+              - checking
+              - savings
+        liability:
+          type: object
+          description: A liability account to link by merchant and account number.
+          properties:
+            mch_id:
+              type: string
+            account_number:
+              type: string
+        metadata:
+          type: object
+    BalanceResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        account_id:
+          type: string
+        amount:
+          type: integer
+          description: Balance in cents.
+        status:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+  parameters:
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+    PageLimit:
+      name: page_limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 100
+    AccountId:
+      name: acc_id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The account identifier (e.g. acc_xxx).
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Method API key as a Bearer token in the Authorization header. Optionally send a Method-Version header (e.g. 2026-03-30).

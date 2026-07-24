@@ -1,0 +1,126 @@
+openapi: 3.0.1
+info:
+  title: Method Financial Accounts Webhooks API
+  description: The Method API enables developers to connect, retrieve, and pay down a consumer's liabilities (credit cards, student loans, auto loans, mortgages, and personal loans) across a network of financial institutions. Core resources are Entities, Accounts, Payments, Merchants, Connect, Transactions, and Webhooks. All requests are authenticated with a Bearer API key.
+  termsOfService: https://methodfi.com/legal/platform-agreement
+  contact:
+    name: Method Support
+    url: https://docs.methodfi.com
+    email: support@methodfi.com
+  version: '2026-03-30'
+servers:
+- url: https://production.methodfi.com
+  description: Production
+- url: https://sandbox.methodfi.com
+  description: Sandbox
+- url: https://dev.methodfi.com
+  description: Development (simulations enabled)
+security:
+- bearerAuth: []
+tags:
+- name: Webhooks
+  description: Asynchronous event delivery to your endpoints.
+paths:
+  /webhooks:
+    post:
+      operationId: createWebhook
+      tags:
+      - Webhooks
+      summary: Create a webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WebhookCreateRequest'
+      responses:
+        '200':
+          description: Webhook created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+    get:
+      operationId: listWebhooks
+      tags:
+      - Webhooks
+      summary: List webhooks
+      responses:
+        '200':
+          description: A list of webhooks
+          content:
+            application/json:
+              schema:
+                type: object
+  /webhooks/{whk_id}:
+    parameters:
+    - name: whk_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: getWebhook
+      tags:
+      - Webhooks
+      summary: Retrieve a webhook
+      responses:
+        '200':
+          description: The webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+    delete:
+      operationId: deleteWebhook
+      tags:
+      - Webhooks
+      summary: Delete a webhook
+      responses:
+        '200':
+          description: The deleted webhook
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookResponse'
+components:
+  schemas:
+    WebhookResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        url:
+          type: string
+          format: uri
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    WebhookCreateRequest:
+      type: object
+      required:
+      - type
+      - url
+      properties:
+        type:
+          type: string
+          description: The event type to subscribe to.
+          example: payment.update
+        url:
+          type: string
+          format: uri
+        auth_token:
+          type: string
+          description: Optional token Method includes when delivering events.
+        metadata:
+          type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Method API key as a Bearer token in the Authorization header. Optionally send a Method-Version header (e.g. 2026-03-30).

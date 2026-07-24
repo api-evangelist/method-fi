@@ -1,0 +1,108 @@
+openapi: 3.0.1
+info:
+  title: Method Financial Accounts Merchants API
+  description: The Method API enables developers to connect, retrieve, and pay down a consumer's liabilities (credit cards, student loans, auto loans, mortgages, and personal loans) across a network of financial institutions. Core resources are Entities, Accounts, Payments, Merchants, Connect, Transactions, and Webhooks. All requests are authenticated with a Bearer API key.
+  termsOfService: https://methodfi.com/legal/platform-agreement
+  contact:
+    name: Method Support
+    url: https://docs.methodfi.com
+    email: support@methodfi.com
+  version: '2026-03-30'
+servers:
+- url: https://production.methodfi.com
+  description: Production
+- url: https://sandbox.methodfi.com
+  description: Sandbox
+- url: https://dev.methodfi.com
+  description: Development (simulations enabled)
+security:
+- bearerAuth: []
+tags:
+- name: Merchants
+  description: Financial institutions that accept payments for a liability.
+paths:
+  /merchants:
+    get:
+      operationId: listMerchants
+      tags:
+      - Merchants
+      summary: List merchants
+      description: Lists merchants - the financial institutions that accept payments for a liability.
+      parameters:
+      - $ref: '#/components/parameters/Page'
+      - $ref: '#/components/parameters/PageLimit'
+      responses:
+        '200':
+          description: A list of merchants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantListResponse'
+  /merchants/{mch_id}:
+    parameters:
+    - name: mch_id
+      in: path
+      required: true
+      schema:
+        type: string
+    get:
+      operationId: getMerchant
+      tags:
+      - Merchants
+      summary: Retrieve a merchant
+      responses:
+        '200':
+          description: The merchant
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchantResponse'
+components:
+  schemas:
+    MerchantResponse:
+      type: object
+      properties:
+        mch_id:
+          type: string
+        name:
+          type: string
+        parent_name:
+          type: string
+        logo:
+          type: string
+          format: uri
+        type:
+          type: string
+          description: The liability account type this merchant services.
+        account_prefixes:
+          type: array
+          items:
+            type: string
+    MerchantListResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchantResponse'
+  parameters:
+    Page:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+    PageLimit:
+      name: page_limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 50
+        maximum: 100
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Method API key as a Bearer token in the Authorization header. Optionally send a Method-Version header (e.g. 2026-03-30).
