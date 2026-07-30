@@ -8,7 +8,20 @@ description: Method Financial provides an embedded liability connectivity and pa
   15,000+ financial institutions. The REST API exposes entities, accounts, payments,
   merchants, connect (liability discovery), transactions, and webhooks, authenticated
   with a Bearer API key.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/method-fi.png
 tags:
 - FinTech
 - Payments
@@ -19,166 +32,300 @@ created: '2026-06-20'
 modified: '2026-06-20'
 specificationVersion: '0.19'
 apis:
-- aid: method-fi:entities
-  name: Method Entities API
-  tags:
-  - Entities
-  - KYC
-  - Identity
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+- aid: method-fi:method-fi-accounts-api
+  name: Method Financial Accounts API
+  description: Liability and asset accounts linked to an entity.
   humanURL: https://docs.methodfi.com/api/core/entities/object
   baseURL: https://production.methodfi.com
-  properties:
-  - url: https://docs.methodfi.com/api/core/entities/object
-    type: Documentation
-  - url: https://docs.methodfi.com/reference/entities/create
-    type: APIReference
-  - url: openapi/method-fi-openapi.yml
-    type: OpenAPI
-  - url: collections/method-fi.postman_collection.json
-    type: PostmanCollection
-  - url: collections/method-fi.opencollection.json
-    type: OpenCollection
-  description: Create and manage Entities - the individuals and corporations that own
-    accounts - along with their identities, credit scores, attributes, products, and
-    KYC/KBA/SMS verification sessions.
-- aid: method-fi:accounts
-  name: Method Accounts API
   tags:
   - Accounts
-  - Liabilities
-  - Balances
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.methodfi.com/api/core/accounts/object
-  baseURL: https://production.methodfi.com
   properties:
-  - url: https://docs.methodfi.com/api/core/accounts/object
-    type: Documentation
-  - url: https://docs.methodfi.com/reference/accounts/create
-    type: APIReference
-  - url: openapi/method-fi-openapi.yml
-    type: OpenAPI
-  - url: collections/method-fi.postman_collection.json
-    type: PostmanCollection
-  - url: collections/method-fi.opencollection.json
-    type: OpenCollection
-  description: Create and retrieve Accounts - the liability and asset accounts linked
-    to an entity - with real-time balances, payoffs, transactions, attributes, and
-    account verification sessions.
-- aid: method-fi:payments
-  name: Method Payments API
-  tags:
-  - Payments
-  - ACH
-  - Debt Payoff
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.methodfi.com/api/core/payments/object
+  - type: OpenAPI
+    url: openapi/method-fi-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/entities/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/create
+  - type: PostmanCollection
+    url: collections/method-fi.postman_collection.json
+  - type: OpenCollection
+    url: collections/method-fi.opencollection.json
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/accounts/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/payments/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/payments/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/merchants/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/merchants/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/connect/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/connect/retrieve
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/transactions/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/transactions/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/webhooks/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/webhooks/create
+- aid: method-fi:method-fi-connect-api
+  name: Method Financial Connect API
+  description: Liability discovery across Method's institution network.
+  humanURL: https://docs.methodfi.com/api/core/entities/object
   baseURL: https://production.methodfi.com
-  properties:
-  - url: https://docs.methodfi.com/api/core/payments/object
-    type: Documentation
-  - url: https://docs.methodfi.com/reference/payments/create
-    type: APIReference
-  - url: openapi/method-fi-openapi.yml
-    type: OpenAPI
-  - url: collections/method-fi.postman_collection.json
-    type: PostmanCollection
-  - url: collections/method-fi.opencollection.json
-    type: OpenCollection
-  description: Move funds electronically by pulling from a source account and sending
-    to a destination liability or asset account, with payment reversals for balancing
-    unsuccessful payments. Settlement occurs in 1-3 business days.
-- aid: method-fi:merchants
-  name: Method Merchants API
-  tags:
-  - Merchants
-  - Lenders
-  - Directory
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.methodfi.com/api/core/merchants/object
-  baseURL: https://production.methodfi.com
-  properties:
-  - url: https://docs.methodfi.com/api/core/merchants/object
-    type: Documentation
-  - url: https://docs.methodfi.com/reference/merchants/list
-    type: APIReference
-  - url: openapi/method-fi-openapi.yml
-    type: OpenAPI
-  - url: collections/method-fi.postman_collection.json
-    type: PostmanCollection
-  - url: collections/method-fi.opencollection.json
-    type: OpenCollection
-  description: List and retrieve Merchants - the financial institutions (credit card
-    issuers, student loan servicers, mortgage and auto lenders) that accept payments
-    for a liability - with presentable names, logos, and account types.
-- aid: method-fi:connect
-  name: Method Connect API
   tags:
   - Connect
-  - Liability Discovery
-  - Account Matching
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.methodfi.com/api/core/connect/object
-  baseURL: https://production.methodfi.com
   properties:
-  - url: https://docs.methodfi.com/api/core/connect/object
-    type: Documentation
-  - url: https://docs.methodfi.com/reference/entities/connect/retrieve
-    type: APIReference
-  - url: openapi/method-fi-openapi.yml
-    type: OpenAPI
-  - url: collections/method-fi.postman_collection.json
-    type: PostmanCollection
-  - url: collections/method-fi.opencollection.json
-    type: OpenCollection
-  description: Discover and connect all of an entity's liability accounts (credit cards,
-    mortgages, auto loans, student loans) across Method's network of financial institutions
-    from identity data alone.
-- aid: method-fi:transactions
-  name: Method Transactions API
+  - type: OpenAPI
+    url: openapi/method-fi-connect-api-openapi.yml
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/entities/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/create
+  - type: PostmanCollection
+    url: collections/method-fi.postman_collection.json
+  - type: OpenCollection
+    url: collections/method-fi.opencollection.json
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/accounts/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/payments/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/payments/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/merchants/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/merchants/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/connect/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/connect/retrieve
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/transactions/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/transactions/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/webhooks/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/webhooks/create
+- aid: method-fi:method-fi-entities-api
+  name: Method Financial Entities API
+  description: Individuals and corporations that own accounts.
+  humanURL: https://docs.methodfi.com/api/core/entities/object
+  baseURL: https://production.methodfi.com
+  tags:
+  - Entities
+  properties:
+  - type: OpenAPI
+    url: openapi/method-fi-entities-api-openapi.yml
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/entities/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/create
+  - type: PostmanCollection
+    url: collections/method-fi.postman_collection.json
+  - type: OpenCollection
+    url: collections/method-fi.opencollection.json
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/accounts/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/payments/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/payments/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/merchants/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/merchants/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/connect/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/connect/retrieve
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/transactions/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/transactions/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/webhooks/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/webhooks/create
+- aid: method-fi:method-fi-merchants-api
+  name: Method Financial Merchants API
+  description: Financial institutions that accept payments for a liability.
+  humanURL: https://docs.methodfi.com/api/core/entities/object
+  baseURL: https://production.methodfi.com
+  tags:
+  - Merchants
+  properties:
+  - type: OpenAPI
+    url: openapi/method-fi-merchants-api-openapi.yml
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/entities/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/create
+  - type: PostmanCollection
+    url: collections/method-fi.postman_collection.json
+  - type: OpenCollection
+    url: collections/method-fi.opencollection.json
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/accounts/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/payments/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/payments/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/merchants/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/merchants/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/connect/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/connect/retrieve
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/transactions/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/transactions/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/webhooks/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/webhooks/create
+- aid: method-fi:method-fi-payments-api
+  name: Method Financial Payments API
+  description: Electronic transfers between a source and destination account.
+  humanURL: https://docs.methodfi.com/api/core/entities/object
+  baseURL: https://production.methodfi.com
+  tags:
+  - Payments
+  properties:
+  - type: OpenAPI
+    url: openapi/method-fi-payments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/entities/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/create
+  - type: PostmanCollection
+    url: collections/method-fi.postman_collection.json
+  - type: OpenCollection
+    url: collections/method-fi.opencollection.json
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/accounts/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/payments/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/payments/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/merchants/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/merchants/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/connect/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/connect/retrieve
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/transactions/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/transactions/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/webhooks/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/webhooks/create
+- aid: method-fi:method-fi-transactions-api
+  name: Method Financial Transactions API
+  description: Transaction history for an account.
+  humanURL: https://docs.methodfi.com/api/core/entities/object
+  baseURL: https://production.methodfi.com
   tags:
   - Transactions
-  - History
-  - Statements
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.methodfi.com/api/core/transactions/object
-  baseURL: https://production.methodfi.com
   properties:
-  - url: https://docs.methodfi.com/api/core/transactions/object
-    type: Documentation
-  - url: https://docs.methodfi.com/reference/accounts/transactions/list
-    type: APIReference
-  - url: openapi/method-fi-openapi.yml
-    type: OpenAPI
-  - url: collections/method-fi.postman_collection.json
-    type: PostmanCollection
-  - url: collections/method-fi.opencollection.json
-    type: OpenCollection
-  description: List and retrieve transaction history for an account, surfacing the
-    posted activity Method has on file for a connected liability or asset account.
-- aid: method-fi:webhooks
-  name: Method Webhooks API
+  - type: OpenAPI
+    url: openapi/method-fi-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/entities/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/create
+  - type: PostmanCollection
+    url: collections/method-fi.postman_collection.json
+  - type: OpenCollection
+    url: collections/method-fi.opencollection.json
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/accounts/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/payments/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/payments/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/merchants/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/merchants/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/connect/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/connect/retrieve
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/transactions/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/transactions/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/webhooks/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/webhooks/create
+- aid: method-fi:method-fi-webhooks-api
+  name: Method Financial Webhooks API
+  description: Asynchronous event delivery to your endpoints.
+  humanURL: https://docs.methodfi.com/api/core/entities/object
+  baseURL: https://production.methodfi.com
   tags:
   - Webhooks
-  - Events
-  - Notifications
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://docs.methodfi.com/api/core/webhooks/object
-  baseURL: https://production.methodfi.com
   properties:
-  - url: https://docs.methodfi.com/api/core/webhooks/object
-    type: Documentation
-  - url: https://docs.methodfi.com/reference/webhooks/create
-    type: APIReference
-  - url: openapi/method-fi-openapi.yml
-    type: OpenAPI
-  - url: collections/method-fi.postman_collection.json
-    type: PostmanCollection
-  - url: collections/method-fi.opencollection.json
-    type: OpenCollection
-  description: Create and manage Webhooks that deliver asynchronous events - entity,
-    account, payment, verification, and attribute updates - to your endpoints over
-    HTTPS as resources change.
+  - type: OpenAPI
+    url: openapi/method-fi-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/entities/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/create
+  - type: PostmanCollection
+    url: collections/method-fi.postman_collection.json
+  - type: OpenCollection
+    url: collections/method-fi.opencollection.json
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/accounts/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/payments/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/payments/create
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/merchants/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/merchants/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/connect/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/entities/connect/retrieve
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/transactions/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/accounts/transactions/list
+  - type: Documentation
+    url: https://docs.methodfi.com/api/core/webhooks/object
+  - type: APIReference
+    url: https://docs.methodfi.com/reference/webhooks/create
 common:
 - type: AgenticAccess
   url: agentic-access/method-fi-agentic-access.yml
