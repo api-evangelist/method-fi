@@ -1,0 +1,26 @@
+{
+  "provider": "method-fi",
+  "sources": [
+    "method-fi-accounts-api-openapi.yml",
+    "method-fi-connect-api-openapi.yml",
+    "method-fi-entities-api-openapi.yml",
+    "method-fi-merchants-api-openapi.yml",
+    "method-fi-payments-api-openapi.yml",
+    "method-fi-transactions-api-openapi.yml",
+    "method-fi-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "method-fi-accounts-api-openapi.yml",
+    "method-fi-connect-api-openapi.yml",
+    "method-fi-entities-api-openapi.yml",
+    "method-fi-merchants-api-openapi.yml",
+    "method-fi-payments-api-openapi.yml",
+    "method-fi-transactions-api-openapi.yml",
+    "method-fi-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
